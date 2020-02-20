@@ -35,14 +35,14 @@ RUN [ "$ARCH" = "armhf" ] && ln -s /usr/local/lib/freerdp /usr/lib/arm-linux-gnu
 RUN [ "$ARCH" = "amd64" ] && ln -s /usr/local/lib/freerdp /usr/lib/x86_64-linux-gnu/freerdp || exit 0
 
 # Install guacamole-server
-RUN curl -SLO "http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/${GUAC_VER}/source/guacamole-server-${GUAC_VER}.tar.gz" \
-  && tar -xzf guacamole-server-${GUAC_VER}.tar.gz \
-  && cd guacamole-server-${GUAC_VER} \
+RUN curl -SLO "https://github.com/kavenr/guacamole-server/archive/${GUAC_VER}-kavenr.tar.gz" \
+  && tar -xzf ${GUAC_VER}-kavenr.tar.gz \
+  && cd guacamole-server-${GUAC_VER}-kavenr \
   && ./configure \
   && make -j$(getconf _NPROCESSORS_ONLN) \
   && make install \
   && cd .. \
-  && rm -rf guacamole-server-${GUAC_VER}.tar.gz guacamole-server-${GUAC_VER} \
+  && rm -rf ${GUAC_VER}-kavenr.tar.gz guacamole-server-${GUAC_VER}-kavenr \
   && ldconfig
 
 # Install guacamole-client and postgres auth adapter
