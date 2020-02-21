@@ -22,7 +22,7 @@ WORKDIR ${GUACAMOLE_HOME}
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    libcairo2-dev libjpeg62-turbo-dev libpng-dev \
+    libcairo2-dev libjpeg62-turbo-dev libpng-dev libossp-uuid-dev \
     libossp-uuid-dev libavcodec-dev libavutil-dev \
     libswscale-dev freerdp2-dev libfreerdp-client2-2 libpango1.0-dev \
     libssh2-1-dev libtelnet-dev libvncserver-dev \
@@ -38,6 +38,7 @@ RUN [ "$ARCH" = "amd64" ] && ln -s /usr/local/lib/freerdp /usr/lib/x86_64-linux-
 RUN curl -SLO "https://github.com/kavenr/guacamole-server/archive/${GUAC_VER}-kavenr.tar.gz" \
   && tar -xzf ${GUAC_VER}-kavenr.tar.gz \
   && cd guacamole-server-${GUAC_VER}-kavenr \
+  && autoreconf -vif \
   && ./configure \
   && make -j$(getconf _NPROCESSORS_ONLN) \
   && make install \
